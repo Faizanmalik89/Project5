@@ -3,68 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Real Cricket</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Sign Up</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Sign Up</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="blogs.html">Blogs</a></li>
-                <li><a href="ads-videos.html">Ads & Videos</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+    <h2>Sign Up</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="signUp()">Sign Up</button>
 
-    <section class="signup-form">
-        <h2>Create an Account</h2>
-        <form id="signupForm">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" required>
+    <h2>Login</h2>
+    <button onclick="login()">Login</button>
+    <button onclick="logout()">Logout</button>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" required>
-
-            <button type="submit">Sign Up</button>
-        </form>
-        <p>Already have an account? <a href="login.html">Login</a></p>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Real Cricket. All Rights Reserved.</p>
-    </footer>
-
-    <script src="firebase-config.js"></script>
     <script>
-        document.getElementById('signupForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let name = document.getElementById('name').value;
-            let email = document.getElementById('email').value;
-            let password = document.getElementById('password').value;
+        function signUp() {
+            var user = netlifyIdentity.currentUser();
+            if (!user) {
+                netlifyIdentity.open("signup");
+            }
+        }
 
-            firebase.auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    let user = userCredential.user;
-                    return firebase.firestore().collection("users").doc(user.uid).set({
-                        name: name,
-                        email: email,
-                        role: "user"
-                    });
-                })
-                .then(() => {
-                    alert('Sign Up Successful!');
-                    window.location.href = "index.html";
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
+        function login() {
+            netlifyIdentity.open("login");
+        }
+
+        function logout() {
+            netlifyIdentity.logout();
+        }
+
+        netlifyIdentity.on("login", user => {
+            console.log("Logged in:", user);
+            alert("Login Successful!");
+        });
+
+        netlifyIdentity.on("logout", () => {
+            console.log("Logged out");
         });
     </script>
 </body>
