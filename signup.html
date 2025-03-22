@@ -5,53 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-</head>
-    <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", (user) => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/dashboard.html"; // Redirect after login
-        });
-      }
-    });
-  }
-    </script>
-<body>
-    <h2>Sign Up</h2>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="signUp()">Sign Up</button>
-
-    <h2>Login</h2>
-    <button onclick="login()">Login</button>
-    <button onclick="logout()">Logout</button>
-
     <script>
         function signUp() {
-            var user = netlifyIdentity.currentUser();
-            if (!user) {
-                netlifyIdentity.open("signup");
-            }
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            netlifyIdentity.signup(email, password)
+                .then((user) => {
+                    alert("Sign-up successful! Please check your email for confirmation.");
+                    console.log(user);
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
         }
-
-        function login() {
-            netlifyIdentity.open("login");
-        }
-
-        function logout() {
-            netlifyIdentity.logout();
-        }
-
-        netlifyIdentity.on("login", user => {
-            console.log("Logged in:", user);
-            alert("Login Successful!");
-        });
-
-        netlifyIdentity.on("logout", () => {
-            console.log("Logged out");
-        });
     </script>
+</head>
+<body>
+    <h2>Sign Up</h2>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <input type="password" id="password" placeholder="Enter your password" required>
+    <button onclick="signUp()">Sign Up</button>
 </body>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </html>
