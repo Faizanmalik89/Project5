@@ -6,6 +6,17 @@
     <title>Sign Up</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
+    <script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", (user) => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/dashboard.html"; // Redirect after login
+        });
+      }
+    });
+  }
+    </script>
 <body>
     <h2>Sign Up</h2>
     <input type="email" id="email" placeholder="Email">
@@ -42,4 +53,5 @@
         });
     </script>
 </body>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </html>
