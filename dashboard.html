@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        function logout() {
+            netlifyIdentity.logout()
+                .then(() => {
+                    alert("Logged out successfully!");
+                    window.location.href = "login.html";
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
+                });
+        }
+
+        window.onload = function () {
+            netlifyIdentity.on("init", (user) => {
+                if (!user) {
+                    window.location.href = "login.html";
+                } else {
+                    document.getElementById("user-email").innerText = user.email;
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+    <h2>Welcome, <span id="user-email"></span></h2>
+    <button onclick="logout()">Logout</button>
+</body>
+</html>
